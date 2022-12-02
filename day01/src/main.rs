@@ -18,7 +18,7 @@ fn main() {
     // reverse sorting
     all_elves.sort_by(|a, b| b.cmp(a));
 
-    let best_three = all_elves[0] + all_elves[1] + all_elves[2];
+    let best_three : i32 = all_elves[..3].iter().sum();
 
     println!("part one: {}", all_elves[0]);
     println!("part two: {}", best_three);
