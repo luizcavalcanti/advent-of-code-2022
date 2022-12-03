@@ -45,33 +45,27 @@ fn calculate_score(opponent: &str, player: &str) -> u32 {
     let mut total: u32 = 0;
 
     total += match opponent {
-        OPPONENT_ROCK => {
-            match player {
-                PLAYER_ROCK => SCORE_DRAW,
-                PLAYER_PAPER => SCORE_WIN,
-                PLAYER_SCISSORS | _ => 0
-            }
+        OPPONENT_ROCK => match player {
+            PLAYER_ROCK => SCORE_DRAW,
+            PLAYER_PAPER => SCORE_WIN,
+            PLAYER_SCISSORS | _ => 0,
         },
-        OPPONENT_PAPER => {
-            match player {
-                PLAYER_PAPER => SCORE_DRAW,
-                PLAYER_SCISSORS => SCORE_WIN,
-                PLAYER_ROCK | _ => 0
-            }
+        OPPONENT_PAPER => match player {
+            PLAYER_PAPER => SCORE_DRAW,
+            PLAYER_SCISSORS => SCORE_WIN,
+            PLAYER_ROCK | _ => 0,
         },
-        OPPONENT_SCISSORS | _ => {
-            match player {
-                PLAYER_SCISSORS => SCORE_DRAW,
-                PLAYER_ROCK => SCORE_WIN,
-                PLAYER_PAPER | _ => 0
-            }
-        }
+        OPPONENT_SCISSORS | _ => match player {
+            PLAYER_SCISSORS => SCORE_DRAW,
+            PLAYER_ROCK => SCORE_WIN,
+            PLAYER_PAPER | _ => 0,
+        },
     };
 
     total += match player {
         PLAYER_ROCK => SCORE_ROCK,
         PLAYER_PAPER => SCORE_PAPER,
-        PLAYER_SCISSORS | _ => SCORE_SCISSORS
+        PLAYER_SCISSORS | _ => SCORE_SCISSORS,
     };
 
     return total;
@@ -79,28 +73,22 @@ fn calculate_score(opponent: &str, player: &str) -> u32 {
 
 fn define_outcome<'a>(opponent: &str, desired_outcome: &'a str) -> &'a str {
     return match opponent {
-        OPPONENT_ROCK => {
-            match desired_outcome {
-                OUTCOME_LOSE => PLAYER_SCISSORS,
-                OUTCOME_DRAW => PLAYER_ROCK,
-                OUTCOME_WIN | _ => PLAYER_PAPER
-            }
+        OPPONENT_ROCK => match desired_outcome {
+            OUTCOME_LOSE => PLAYER_SCISSORS,
+            OUTCOME_DRAW => PLAYER_ROCK,
+            OUTCOME_WIN | _ => PLAYER_PAPER,
         },
-        OPPONENT_PAPER => {
-            match desired_outcome {
-                OUTCOME_LOSE => PLAYER_ROCK,
-                OUTCOME_DRAW => PLAYER_PAPER,
-                OUTCOME_WIN | _ => PLAYER_SCISSORS
-            }
+        OPPONENT_PAPER => match desired_outcome {
+            OUTCOME_LOSE => PLAYER_ROCK,
+            OUTCOME_DRAW => PLAYER_PAPER,
+            OUTCOME_WIN | _ => PLAYER_SCISSORS,
         },
-        OPPONENT_SCISSORS | _ => {
-            match desired_outcome {
-                OUTCOME_LOSE => PLAYER_PAPER,
-                OUTCOME_DRAW => PLAYER_SCISSORS,
-                OUTCOME_WIN | _ => PLAYER_ROCK
-            }
-        }
-    }
+        OPPONENT_SCISSORS | _ => match desired_outcome {
+            OUTCOME_LOSE => PLAYER_PAPER,
+            OUTCOME_DRAW => PLAYER_SCISSORS,
+            OUTCOME_WIN | _ => PLAYER_ROCK,
+        },
+    };
 }
 
 fn read_file(file_path: &str) -> String {
