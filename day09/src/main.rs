@@ -6,8 +6,18 @@ fn main() {
     let input = read_file("input.txt");
     let lines = input.split("\n");
 
-    let mut head_pos: [i32; 2] = [0, 4];
-    let mut tail_pos: [i32; 2] = [0, 4];
+    let mut nodes: [[i32; 2]; 10] = [
+        [0, 4],
+        [0, 4],
+        [0, 4],
+        [0, 4],
+        [0, 4],
+        [0, 4],
+        [0, 4],
+        [0, 4],
+        [0, 4],
+        [0, 4],
+    ];
 
     let mut visited: HashSet<[i32; 2]> = HashSet::new();
 
@@ -24,67 +34,67 @@ fn main() {
 
         for _ in 0..ammount {
             match direction {
-                "L" => head_pos[0] -= 1,
-                "R" => head_pos[0] += 1,
-                "U" => head_pos[1] -= 1,
-                "D" => head_pos[1] += 1,
+                "L" => nodes[0][0] -= 1,
+                "R" => nodes[0][0] += 1,
+                "U" => nodes[0][1] -= 1,
+                "D" => nodes[0][1] += 1,
                 _ => {}
             }
 
-            // Chase right
-            if head_pos[0] - tail_pos[0] > 1 {
-                tail_pos[0] += 1;
-                if head_pos[1] - tail_pos[1] > 0 {
-                    tail_pos[1] += 1;
+            for i in 1..nodes.len() {
+                // Chase right
+                if nodes[i-1][0] - nodes[i][0] > 1 {
+                    nodes[i][0] += 1;
+                    if nodes[i-1][1] - nodes[i][1] > 0 {
+                        nodes[i][1] += 1;
+                    }
+                    if nodes[i][1] - nodes[i-1][1] > 0 {
+                        nodes[i][1] -= 1;
+                    }
                 }
-                if tail_pos[1] - head_pos[1] > 0 {
-                    tail_pos[1] -= 1;
+
+                // Chase left
+                if nodes[i][0] - nodes[i-1][0] > 1 {
+                    nodes[i][0] -= 1;
+                    // check diagonals
+                    if nodes[i-1][1] - nodes[i][1] > 0 {
+                        nodes[i][1] += 1;
+                    }
+                    if nodes[i][1] - nodes[i-1][1] > 0 {
+                        nodes[i][1] -= 1;
+                    }
+                }
+
+                // Chase down
+                if nodes[i-1][1] - nodes[i][1] > 1 {
+                    nodes[i][1] += 1;
+                    if nodes[i-1][0] - nodes[i][0] > 0 {
+                        nodes[i][0] += 1;
+                    }
+                    if nodes[i][0] - nodes[i-1][0] > 0 {
+                        nodes[i][0] -= 1;
+                    }
+                }
+
+                // Chase up
+                if nodes[i][1] - nodes[i-1][1] > 1 {
+                    nodes[i][1] -= 1;
+                    // Check diagonals
+                    if nodes[i-1][0] - nodes[i][0] > 0 {
+                        nodes[i][0] += 1;
+                    }
+                    if nodes[i][0] - nodes[i-1][0] > 0 {
+                        nodes[i][0] -= 1;
+                    }
                 }
             }
 
-            // Chase left
-            if tail_pos[0] - head_pos[0] > 1 {
-                tail_pos[0] -= 1;
-                // check diagonals
-                if head_pos[1] - tail_pos[1] > 0 {
-                    tail_pos[1] += 1;
-                }
-                if tail_pos[1] - head_pos[1] > 0 {
-                    tail_pos[1] -= 1;
-                }
-            }
-
-            // Chase down
-            if head_pos[1] - tail_pos[1] > 1 {
-                tail_pos[1] += 1;
-                if head_pos[0] - tail_pos[0] > 0 {
-                    tail_pos[0] += 1;
-                }
-                if tail_pos[0] - head_pos[0] > 0 {
-                    tail_pos[0] -= 1;
-                }
-            }
-
-            // Chase up
-            if tail_pos[1] - head_pos[1] > 1 {
-                tail_pos[1] -= 1;
-                // Check diagonals
-                if head_pos[0] - tail_pos[0] > 0 {
-                    tail_pos[0] += 1;
-                }
-                if tail_pos[0] - head_pos[0] > 0 {
-                    tail_pos[0] -= 1;
-                }
-            }
-
-            visited.insert(tail_pos);
-            println!("H: {head_pos:?}");
-            println!("T: {tail_pos:?}");
+            visited.insert(nodes[nodes.len()-1]);
         }
     }
 
     println!("{visited:?}");
-    println!("part one: {}", visited.len());
+    println!("part two: {}", visited.len());
 }
 
 fn read_file(file_path: &str) -> String {
